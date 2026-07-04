@@ -64,7 +64,7 @@
 
 <main>
   <h1>Level 0 骨架验证</h1>
-  <p class="notice">占位内容（天干地支 20 字），非验证版楞严咒文本 — 见 src/data/placeholder-sample.ts</p>
+  <p class="notice">测试内容：李白《静夜思》20 字，非项目最终目标内容（佛教梵呗）— 见 src/data/placeholder-sample.ts</p>
   <div class="controls">
     <button on:click={togglePlay}>{playing ? '暂停' : '播放'}</button>
     <input type="range" min="0" max={totalDuration} step="0.01" value={t} on:input={onSeek} />

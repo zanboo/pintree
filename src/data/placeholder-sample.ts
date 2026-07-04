@@ -1,21 +1,23 @@
-// PLACEHOLDER CONTENT for Level 0 pipeline testing only.
-// These are the ten Heavenly Stems + first ten Earthly Branches (甲乙丙丁...) —
-// a neutral, well-known secular sequence used purely as 20 distinct single-
-// character units with unambiguous pinyin. This is NOT the verified 楞严咒
-// 261-280 excerpt required by the actual Level 0 exit test (docs/design-v0.8.md
-// §13.1) — swap this module's data for the real, source-checked mantra text
-// (with real per-character timing) before running that test. Content is data;
-// nothing here is meant to be load-bearing beyond exercising parser -> f(t) ->
-// render end to end.
+// SAMPLE CONTENT for Level 0 pipeline testing.
+// Li Bai's "静夜思" (Quiet Night Thoughts) — 20 characters (4 lines x 5),
+// one of the best-known poems in Chinese, chosen specifically because its
+// text and pinyin are unambiguous and don't need source verification (unlike
+// the 楞严咒 excerpt the design doc's own Level 0 exit test calls for, which
+// this project has no verified source for yet — see conversation history).
+// It also happens to match v0.8's own §8 "近场" expansion targets (蒙学/诗词
+// 吟诵). This is still a stand-in for the project's real target domain
+// (Buddhist chant works), not final content — swap it for a verified work
+// whenever one becomes available. Content is data; nothing here is
+// load-bearing beyond exercising parser -> f(t) -> render end to end.
 
 import { parseSkeleton } from '../parser/skeleton';
 import type { AnchorGroup, ContentNode, VisualTemplate } from '../schema/work';
 
 const CHARACTERS = [
-  ['甲', 'jiǎ'], ['乙', 'yǐ'], ['丙', 'bǐng'], ['丁', 'dīng'], ['戊', 'wù'],
-  ['己', 'jǐ'], ['庚', 'gēng'], ['辛', 'xīn'], ['壬', 'rén'], ['癸', 'guǐ'],
-  ['子', 'zǐ'], ['丑', 'chǒu'], ['寅', 'yín'], ['卯', 'mǎo'], ['辰', 'chén'],
-  ['巳', 'sì'], ['午', 'wǔ'], ['未', 'wèi'], ['申', 'shēn'], ['酉', 'yǒu']
+  ['床', 'chuáng'], ['前', 'qián'], ['明', 'míng'], ['月', 'yuè'], ['光', 'guāng'],
+  ['疑', 'yí'], ['是', 'shì'], ['地', 'dì'], ['上', 'shàng'], ['霜', 'shuāng'],
+  ['举', 'jǔ'], ['头', 'tóu'], ['望', 'wàng'], ['明', 'míng'], ['月', 'yuè'],
+  ['低', 'dī'], ['头', 'tóu'], ['思', 'sī'], ['故', 'gù'], ['乡', 'xiāng']
 ] as const;
 
 const SECONDS_PER_UNIT = 0.6;
