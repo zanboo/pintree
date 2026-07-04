@@ -1,11 +1,6 @@
 // Master clock, per docs/design-v0.8.md §0. Single source of truth for t.
-//
-// Only the no-audio-track (software) branch is built here: `performance.now()`
-// driven, per §0's explicit degradation rule for audio-less works. The
-// `AudioContext.currentTime` branch is Level 1 scope (the roadmap lists
-// "主时钟契约接入 AudioContext" under Level 1, since Level 0 has no audio
-// track yet) — add it as a second implementation of this same interface,
-// don't rewrite call sites.
+// Two implementations of the same MasterClock interface — call sites never
+// know which one they're driving.
 
 export interface MasterClock {
   getTime(): number;
@@ -38,6 +33,30 @@ export function createSoftwareClock(): MasterClock {
     seek(t: number) {
       baseT = t;
       baseWallMs = performance.now();
+    }
+  };
+}
+
+// `t = audioContext.currentTime - offset` (§0). AudioContext.currentTime is
+// monotonic and read-only — it can't be rewound — so "seek" and "pause" are
+// both implemented as offset adjustments plus the context's own
+// suspend()/resume(), never by touching currentTime itself. currentTime is
+// guaranteed to hold steady while suspended and resume counting seamlessly
+// on resume, so no re-sync is needed across a pause/resume cycle.
+export function createAudioClock(ctx: AudioContext): MasterClock {
+  let offset = ctx.currentTime;
+
+  return {
+    getTime: () => ctx.currentTime - offset,
+    isPlaying: () => ctx.state === 'running',
+    play() {
+      if (ctx.state !== 'running') void ctx.resume();
+    },
+    pause() {
+      if (ctx.state === 'running') void ctx.suspend();
+    },
+    seek(t: number) {
+      offset = ctx.currentTime - t;
     }
   };
 }
